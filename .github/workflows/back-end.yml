@@ -1,0 +1,78 @@
+name: Back-end
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/back-end/
+    env:
+      NODE_ENV: "staging"
+      HTTP_SERVER_HOST: "localhost"
+      HTTP_SERVER_PORT: 3000
+      DATABASE_CLIENT: "pg"
+      DATABASE_URI: "${{ secrets.DATABASE_URI }}"
+      JWT_SECRET: "${{ secrets.JWT_SECRET }}"
+      FIREBASE_CLIENT_EMAIL: "${{ secrets.FIREBASE_CLIENT_EMAIL }}"
+      FIREBASE_PRIVATE_KEY: "${{ secrets.FIREBASE_PRIVATE_KEY }}"
+      FIREBASE_PROJECT_ID: "${{ secrets.FIREBASE_PROJECT_ID }}"
+      FIREBASE_STORAGE_BUCKET: "${{ secrets.FIREBASE_STORAGE_BUCKET }}"
+      CACHE_URI: "redis://localhost:6379"
+
+    strategy:
+      matrix:
+        node-version: [20.15.1]
+
+    services:
+      database:
+        image: "postgres"
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: "postgres"
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      cache:
+        image: redis
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run migrations
+        run: NODE_ENV=staging npm run knex migrate:latest
+
+      - name: Run tests and collect coverage
+        run: npm run coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
