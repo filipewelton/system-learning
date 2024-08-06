@@ -1,0 +1,10 @@
+docker/
+docker-compose.yml
+
+packages/**/node_modules
+
+packages/back-end/coverage
+packages/back-end/.env
+packages/back-end/.env.test
+packages/back-end/database.sqlite
+packages/back-end/package-lock.json
