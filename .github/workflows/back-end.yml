@@ -76,3 +76,10 @@ jobs:
         uses: codecov/codecov-action@v4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Deploy
+        if: github.ref == 'refs/heads/main'
+        env:
+          deploy_url: ${{ secrets.BACK_END_DEPLOY_URL }}
+        run: |
+          curl "$deploy_url"
