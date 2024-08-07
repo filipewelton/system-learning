@@ -15,7 +15,6 @@ export const env = z
     HTTP_SERVER_PORT: z.coerce.number(),
     DATABASE_CLIENT: z.string(),
     DATABASE_URI: z.string(),
-    DATABASE_SSL: z.coerce.boolean().optional(),
     JWT_SECRET: z.string(),
     FIREBASE_CLIENT_EMAIL: z.string(),
     FIREBASE_PRIVATE_KEY: z.string(),

@@ -38,9 +38,11 @@ afterAll(async () => {
 
 describe('Instructor creation', () => {
   it('should be possible to create', async () => {
+    const data = mockInstructorData()
+
     const { status } = await supertest(app.server)
       .post('/instructors')
-      .send(mockInstructorData())
+      .send(data)
 
     expect(status).toEqual(204)
   })

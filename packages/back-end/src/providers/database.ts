@@ -5,7 +5,6 @@ import { env } from '__configs/environment'
 export const config: Knex.Config = {
   connection: {
     connectionString: env.DATABASE_URI,
-    ssl: env.DATABASE_SSL,
     query_timeout: 1000,
     keepAlive: true,
   },
