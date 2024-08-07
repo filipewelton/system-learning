@@ -5,6 +5,7 @@ import { CloudStorageUploadRepository } from '__data/repositories/background-job
 import { FirebaseCloudStorageRepository } from '__data/repositories/cloud-storage/firebase'
 import { PostgresInstructorRepository } from '__data/repositories/instructor/postgresql'
 import { RedisResultPageCountRepository } from '__data/repositories/result-page-count/redis'
+import { Instructor } from '__data/schemas/instructor'
 import { BullBackgroundJobProvider } from '__providers/bull-background-jobs'
 import { FirebaseCloudStorageProvider } from '__providers/firebase-cloud-storage'
 
@@ -56,7 +57,7 @@ export async function update(req: FastifyRequest, res: FastifyReply) {
     instructorRepository,
     routeParams: req.params,
     body: req.body,
-    instructor: req.user,
+    instructor: req.user as Instructor,
   })
 
   res.status(200).send(response)
@@ -68,7 +69,7 @@ export async function uploadAvatar(req: FastifyRequest, res: FastifyReply) {
     uploadRepository,
     routeParams: req.params,
     file: req.file(),
-    instructor: req.user,
+    instructor: req.user as Instructor,
   })
 
   res.status(200).send(response)

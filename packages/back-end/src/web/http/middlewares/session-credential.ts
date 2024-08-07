@@ -6,10 +6,14 @@ import { NotFoundException } from '__application/exceptions/not-found'
 import { UnauthorizedException } from '__application/exceptions/unauthorized'
 import { env } from '__configs/environment'
 import { PostgresInstructorRepository } from '__data/repositories/instructor/postgresql'
+import { PostgresStudentRepository } from '__data/repositories/student/postgres'
 import { FindInstructorById } from '__domain/use-cases/instructor/find-by-id'
+import { FindStudentById } from '__domain/use-cases/student/find-by-id'
 
 const instructorRepository = new PostgresInstructorRepository()
+const studentRepository = new PostgresStudentRepository()
 const findInstructorById = new FindInstructorById(instructorRepository)
+const findStudentById = new FindStudentById(studentRepository)
 
 export function validateSessionCredential(role: SessionCredentialRoles) {
   return async function (req: FastifyRequest) {
@@ -36,9 +40,9 @@ export function validateSessionCredential(role: SessionCredentialRoles) {
         throw 'Unauthorized token'
       }
 
-      const user = await findInstructorById.call(parsedToken.sub)
+      const user = await getUser(role, parsedToken.sub)
 
-      req.user = user.instructor
+      req.user = user
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new UnauthorizedException('User not found')
@@ -47,4 +51,14 @@ export function validateSessionCredential(role: SessionCredentialRoles) {
       throw new UnauthorizedException(error as string)
     }
   }
+}
+
+async function getUser(role: SessionCredentialRoles, sub: string) {
+  if (role === 'instructor') {
+    const { instructor } = await findInstructorById.call(sub)
+    return instructor
+  }
+
+  const { student } = await findStudentById.call(sub)
+  return student
 }

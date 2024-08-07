@@ -6,6 +6,7 @@ import { ZodError } from 'zod'
 import { Exception } from '__application/exceptions/exception'
 
 import { instructorRouter } from './routers/instructor'
+import { studentRouter } from './routers/student'
 
 const app = fastify()
 
@@ -14,6 +15,7 @@ app.register(cors, {
 })
 
 app.register(instructorRouter, { prefix: 'instructors' })
+app.register(studentRouter, { prefix: 'students' })
 
 app.setErrorHandler((error, _request, reply) => {
   if (error instanceof Exception) {

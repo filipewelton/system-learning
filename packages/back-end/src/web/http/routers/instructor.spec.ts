@@ -102,7 +102,7 @@ describe('Instructor update', () => {
 })
 
 describe('Instructor avatar upload', () => {
-  const avatar = '/tmp/avatar.png'
+  const avatar = '/tmp/instructor.png'
 
   beforeAll(() => {
     writeFileSync(avatar, faker.lorem.words())
