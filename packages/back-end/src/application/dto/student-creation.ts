@@ -5,7 +5,7 @@ export const studentCreationDto = z.object({
   name: z
     .string()
     .regex(
-      /^(([A-Z]([a-z]+|\.)\s?)+)$/,
+      /^(([A-Z]([a-z-]+|\.)\s?)+)$/,
       'The name should be in title case format',
     ),
 })
