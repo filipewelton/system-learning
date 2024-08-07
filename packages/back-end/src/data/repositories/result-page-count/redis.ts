@@ -36,16 +36,16 @@ export class RedisResultPageCountRepository
       .hget(key, 'rows')
       .then((value) => (!value ? 0 : parseInt(value)))
       .then(async (value) => {
-        if (value > 0) return value
+        if (value > 0) return value + 1
 
         const count = await database('Instructors')
           .first()
           .count()
-          .then((result) => result['count(*)'])
+          .then((result) => result['count'])
 
-        if (typeof count === 'number') return count
+        if (typeof count === 'number') return count + 1
 
-        return Number(count)
+        return Number(count) + 1
       })
   }
 

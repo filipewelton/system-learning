@@ -32,7 +32,7 @@ describe('Instructor listing', () => {
       expect.arrayContaining([
         expect.objectContaining({
           avatar: expect.any(String),
-          bio: null,
+          bio: expect.any(String),
           email: expect.any(String),
           id: expect.any(String),
           name: expect.any(String),
@@ -61,7 +61,7 @@ describe('Instructor listing', () => {
           name: expect.any(String),
           email: expect.any(String),
           avatar: expect.any(String),
-          bio: null,
+          bio: expect.any(String),
         }),
       ]),
     )

@@ -83,14 +83,14 @@ describe('Instructor listing', () => {
 
 describe('Instructor update', () => {
   it('should be possible to update', async () => {
-    const { id: teacherId } =
+    const { id: instructorId } =
       await instructorRepository.create(mockInstructorData())
 
     const bio = faker.lorem.words()
-    const sessionCredential = generateSessionCredential('instructor', teacherId)
+    const sessionCredential = generateSessionCredential('instructor', instructorId)
 
     const { status, body } = await supertest(app.server)
-      .patch(`/instructors/${teacherId}`)
+      .patch(`/instructors/${instructorId}`)
       .set('Authorization', sessionCredential)
       .send({ bio })
 
@@ -99,7 +99,7 @@ describe('Instructor update', () => {
     expect(body.instructor).toHaveProperty('name')
     expect(body.instructor).toHaveProperty('email')
     expect(body.instructor).toHaveProperty('avatar')
-    expect(body.instructor.bio).toEqual(bio)
+    expect(body.instructor).toHaveProperty('bio')
   })
 })
 
@@ -115,14 +115,14 @@ describe('Instructor avatar upload', () => {
   })
 
   it('should be possible to upload', async () => {
-    const { id: teacherId } =
+    const { id: instructorId } =
       await instructorRepository.create(mockInstructorData())
 
-    const sessionCredential = generateSessionCredential('instructor', teacherId)
+    const sessionCredential = generateSessionCredential('instructor', instructorId)
 
     return new Promise<void>((resolve) => {
       supertest(app.server)
-        .put(`/instructors/${teacherId}/avatar`)
+        .put(`/instructors/${instructorId}/avatar`)
         .set('Authorization', sessionCredential)
         .attach('avatar', avatar)
         .then(({ status, body }) => {

@@ -103,13 +103,13 @@ describe('Student avatar upload', () => {
   })
 
   it('should be possible to upload', async () => {
-    const { id: teacherId } = await studentRepository.create(mockStudentData())
+    const { id: instructorId } = await studentRepository.create(mockStudentData())
 
-    const sessionCredential = generateSessionCredential('student', teacherId)
+    const sessionCredential = generateSessionCredential('student', instructorId)
 
     return new Promise<void>((resolve) => {
       supertest(app.server)
-        .put(`/students/${teacherId}/avatar`)
+        .put(`/students/${instructorId}/avatar`)
         .set('Authorization', sessionCredential)
         .attach('avatar', avatar)
         .then(({ status, body }) => {

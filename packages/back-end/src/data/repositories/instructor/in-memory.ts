@@ -17,7 +17,6 @@ export class InMemoryInstructorRepository implements InstructorRepository {
       ...params,
       avatar: DEFAULT_USER_AVATAR_URL,
       id: ulid(),
-      bio: null,
     }
 
     this.db.push(instructor)

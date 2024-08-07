@@ -13,11 +13,11 @@ const createInstructor = new CreateInstructor(
 )
 
 export async function seed(): Promise<void> {
-  const data = Array.from(new Array(ITEMS_PER_PAGE + 1)).map(() =>
+  const dataList = Array.from(new Array(ITEMS_PER_PAGE + 1)).map(() =>
     mockInstructorData(),
   )
 
-  for await (const d of data) {
-    await createInstructor.call(d)
+  for await (const data of dataList) {
+    await createInstructor.call(data)
   }
 }

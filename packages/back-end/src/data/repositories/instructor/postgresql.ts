@@ -17,7 +17,6 @@ export class PostgresInstructorRepository implements InstructorRepository {
         {
           ...params,
           id: ulid(),
-          bio: null,
           avatar: DEFAULT_USER_AVATAR_URL,
         },
         '*',
