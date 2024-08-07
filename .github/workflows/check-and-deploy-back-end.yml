@@ -1,8 +1,10 @@
-name: Back-end
+name: Check and Deploy Back-end
 
 on:
   push:
     branches: ["main"]
+    paths:
+      - "packages/back-end/**"
   pull_request:
     branches: ["main"]
 
@@ -33,7 +35,7 @@ jobs:
       database:
         image: "postgres"
         ports:
-          - 5432:5432
+          - "5432:5432"
         env:
           POSTGRES_PASSWORD: "postgres"
         options: >-
