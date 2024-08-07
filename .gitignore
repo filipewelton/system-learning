@@ -8,3 +8,7 @@ packages/back-end/.env
 packages/back-end/.env.test
 packages/back-end/database.sqlite
 packages/back-end/package-lock.json
+
+packages/front-end/.next
+packages/front-end/.env.local
+packages/front-end/package-lock.json
